@@ -5,9 +5,7 @@ import sys
 import os
 #import pytau
 sys.path.append('../..')
-from frameworkpath import *
-sys.path.append(fsrc)
-from component import Component
+from ipsframework.component import Component
 
 class XL_worker(Component):
     def __init__(self, services, config):

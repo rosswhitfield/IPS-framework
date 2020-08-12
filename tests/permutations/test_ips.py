@@ -2,27 +2,15 @@
 # Copyright 2006-2012 UT-Battelle, LLC. See LICENSE for more information.
 #-------------------------------------------------------------------------------
 #from processing import Queue
-import gc
-import pprint
 import sys
-import socket
-import getopt
-import os
-import traceback
-import time
 import unittest
-import logging
 from test_permutations import test_permutations
 from test_parameterized_cases import ParameterizedTestCase
 
 sys.path.append('..')
-from frameworkpath import *
-sys.path.append(fsrc)
 sys.path.append('../components/drivers')
 sys.path.append('../components/workers')
 
-from ips import Framework
-from configobj import ConfigObj
 
 """
     This will be the test harness for the various comprehensive tests.
@@ -45,7 +33,7 @@ class testIPS(unittest.TestCase):
             self.run_done = None
             self.cfgFile_list = []
             self.log_file = None
-            self.platform_filename = None
+            self.platform_filename = 'platform.conf'
 
     def printUsageMessage(self):
         print('Usage: ips [--create-runspace | --run-setup | --run]+ --simulation=SIM_FILE_NAME --platform=PLATFORM_FILE_NAME --log=LOG_FILE_NAME [--debug | --ftb]')
@@ -106,7 +94,7 @@ class testIPS(unittest.TestCase):
                                 param.cfgFile_list = cfgFile_list
                                 param.log_file = log_file
                                 try:
-                                   param.platform_filename = platform_filename
+                                   param.platform_filename = self.platform_filename
                                 except:
                                    print("Getting platform file from build")
                                 suite = unittest.TestSuite()

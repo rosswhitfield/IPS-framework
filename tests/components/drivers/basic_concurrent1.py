@@ -14,9 +14,7 @@ import os
 import time
 sys.path.append('../..')
 sys.path.append('..')
-from frameworkpath import *
-sys.path.append(fsrc)
-from component import Component
+from ipsframework.component import Component
 
 class basic_concurrent1(Component):
     def __init__(self, services, config):
