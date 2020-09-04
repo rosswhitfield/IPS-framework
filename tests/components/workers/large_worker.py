@@ -3,9 +3,7 @@
 #-------------------------------------------------------------------------------
 import sys
 import os
-sys.path.append('../..')
 from ipsframework.component import Component
-#import pytau
 
 class large_worker(Component):
     def __init__(self, services, config):
@@ -27,7 +25,12 @@ class large_worker(Component):
         #pytau.start(self.timer)
         sleep_time = 1
         self.services.log('Stepping Worker boogity boogity', self.NPROC, self.BIN_PATH)
-        pid = self.services.launch_task(int(self.NPROC), self.BIN_PATH, './parallel_sleep', str(sleep_time), logfile='my_out'+timestamp)
+        cwd = self.services.get_working_dir()
+        pid = self.services.launch_task(int(self.NPROC),
+                                        cwd,
+                                        os.path.join(self.BIN_PATH, self.BIN),
+                                        str(sleep_time),
+                                        logfile='my_out'+timestamp)
         retval = self.services.wait_task(pid)
         #pytau.stop(self.timer)
         return retval

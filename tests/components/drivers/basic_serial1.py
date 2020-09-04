@@ -11,8 +11,6 @@ always pass.
 import sys
 import os
 import time
-sys.path.append('../..')
-sys.path.append('..')
 from ipsframework.component import Component
 
 class basic_serial1(Component):
