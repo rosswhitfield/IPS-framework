@@ -1,6 +1,7 @@
 from ipsframework.ips import Framework
 import glob
 import json
+import pytest
 
 
 def write_basic_config_and_platform_files(tmpdir):
@@ -111,3 +112,89 @@ def test_framework_simple(tmpdir, capfd):
     captured = capfd.readouterr()
     assert captured.out == ''
     assert captured.err == ''
+
+
+def test_framework_empty_config_list(tmpdir):
+
+    with pytest.raises(ValueError) as excinfo:
+        Framework(config_file_list=[],
+                  log_file_name=str(tmpdir.join('test.log')),
+                  platform_file_name='platform.conf',
+                  debug=None,
+                  verbose_debug=None,
+                  cmd_nodes=0,
+                  cmd_ppn=0)
+
+    assert str(excinfo).endswith("Missing config file? Something is very wrong")
+
+    # check output log file
+    with open(str(tmpdir.join('test.log')), 'r') as f:
+        lines = f.readlines()
+
+    assert len(lines) == 3
+    assert lines[0].endswith("FRAMEWORK       ERROR    Missing config file? Something is very wrong\n")
+    assert lines[1].endswith("FRAMEWORK       ERROR    Problem initializing managers\n")
+    assert lines[2].endswith("FRAMEWORK       ERROR    exception encountered while cleaning up config_manager\n")
+
+
+def test_framework_log_output(tmpdir):
+    platform_file, config_file = write_basic_config_and_platform_files(tmpdir)
+
+    framework = Framework(config_file_list=[str(config_file)],
+                          log_file_name=str(tmpdir.join('test.log')),
+                          platform_file_name=str(platform_file),
+                          debug=None,
+                          verbose_debug=None,
+                          cmd_nodes=0,
+                          cmd_ppn=0)
+
+    framework.log("log message")
+    framework.debug("debug message")
+    framework.info("info message")
+    framework.warning("warning message")
+    framework.error("error message")
+    framework.exception("exception message")
+    framework.critical("critical message")
+
+    # check output log file
+    with open(str(tmpdir.join('test.log')), 'r') as f:
+        lines = f.readlines()
+
+    assert len(lines) == 9
+    assert lines[5].endswith("FRAMEWORK       WARNING  warning message\n")
+    assert lines[6].endswith("FRAMEWORK       ERROR    error message\n")
+    assert lines[7].endswith("FRAMEWORK       ERROR    exception message\n")
+    assert lines[8].endswith("FRAMEWORK       CRITICAL critical message\n")
+
+
+def test_framework_log_output_debug(tmpdir):
+    platform_file, config_file = write_basic_config_and_platform_files(tmpdir)
+
+    framework = Framework(config_file_list=[str(config_file)],
+                          log_file_name=str(tmpdir.join('test.log')),
+                          platform_file_name=str(platform_file),
+                          debug=True,
+                          verbose_debug=None,
+                          cmd_nodes=0,
+                          cmd_ppn=0)
+
+    framework.log("log message")
+    framework.debug("debug message")
+    framework.info("info message")
+    framework.warning("warning message")
+    framework.error("error message")
+    framework.exception("exception message")
+    framework.critical("critical message")
+
+    # check output log file
+    with open(str(tmpdir.join('test.log')), 'r') as f:
+        lines = f.readlines()
+
+    assert len(lines) == 13
+    assert lines[6].endswith("FRAMEWORK       INFO     log message\n")
+    assert lines[7].endswith("FRAMEWORK       DEBUG    debug message\n")
+    assert lines[8].endswith("FRAMEWORK       INFO     info message\n")
+    assert lines[9].endswith("FRAMEWORK       WARNING  warning message\n")
+    assert lines[10].endswith("FRAMEWORK       ERROR    error message\n")
+    assert lines[11].endswith("FRAMEWORK       ERROR    exception message\n")
+    assert lines[12].endswith("FRAMEWORK       CRITICAL critical message\n")
