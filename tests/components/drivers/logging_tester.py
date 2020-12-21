@@ -1,4 +1,4 @@
-from ipsframework import Component
+from ipsframework.component import Component
 
 log_types = ["log",
              "debug",

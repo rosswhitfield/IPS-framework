@@ -1,4 +1,4 @@
-from ipsframework import Framework
+from ipsframework.ips import Framework
 
 
 def write_basic_config_and_platform_files(tmpdir):

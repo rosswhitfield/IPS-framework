@@ -1,7 +1,7 @@
 # -------------------------------------------------------------------------------
 #  Copyright 2006-2020 UT-Battelle, LLC. See LICENSE for more information.
 # -------------------------------------------------------------------------------
-from ipsframework import Component
+from ipsframework.component import Component
 
 
 class HelloWorker(Component):

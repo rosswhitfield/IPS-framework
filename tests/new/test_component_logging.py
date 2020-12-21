@@ -1,4 +1,4 @@
-from ipsframework import Framework
+from ipsframework.ips import Framework
 
 
 map_log_to_level = {"log": "INFO",

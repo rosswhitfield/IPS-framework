@@ -1,4 +1,4 @@
-from ipsframework import Component
+from ipsframework.component import Component
 
 
 class init_dataManager(Component):

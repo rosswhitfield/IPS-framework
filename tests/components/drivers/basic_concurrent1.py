@@ -9,7 +9,7 @@ of components, resource requirements, etc.).  This test scenario should
 always pass.
 """
 
-from ipsframework import Component
+from ipsframework.component import Component
 
 
 class basic_concurrent1(Component):

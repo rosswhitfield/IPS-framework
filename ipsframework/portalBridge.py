@@ -17,8 +17,9 @@ import hashlib
 import glob
 import itertools
 import json
-from ipsframework import ipsutil, Component
+from ipsframework.component import Component
 from ipsframework.convert_log_function import convert_logdata_to_html
+from ipsframework import ipsutil
 
 try:
     from mpo_arg import mpo_methods as mpo
