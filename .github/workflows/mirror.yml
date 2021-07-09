@@ -1,0 +1,15 @@
+name: Mirror repo
+
+on:
+  push
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Push to mirror
+      run: |
+        git push --force https://oauth2:${{ secrets.GIT_TOKEN }}@${{ secrets.GIT_REPO }}
